@@ -18,6 +18,16 @@ public class CleaningSchedular implements Runnable {
     public void run() {
         File folder=new File("C:\\Users\\bs078474\\OneDrive - Cerner Corporation\\Documents\\learnings\\Java\\linkedin-learning-java-cuncurrency\\Ex_Files_Java_EE_Concurrency\\Exercise Files\\randomJunkToDelete");
         File[] files=folder.listFiles();
+        int i=6;
+        while(i>=0){
+            System.out.println("sleeping for seconds:"+i);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            i--;
+        }
         for(File file: files){      // delete files from dir if older than 5 mins
             System.out.println("Checking file: "+file.getName());
             if(System.currentTimeMillis()-file.lastModified()>1*60*1000){
