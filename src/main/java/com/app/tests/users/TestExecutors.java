@@ -20,14 +20,31 @@ public class TestExecutors {
 //        ExecutorService service= Executors.newSingleThreadExecutor();
         ExecutorService service= Executors.newCachedThreadPool();
         UserDao dao= new UserDao();
+        ExecutorService foreverService= Executors.newSingleThreadExecutor();
+        foreverService.submit(new Runnable(){
+            public void run() {
+                int i=0;
+                while(i<10){
+                    System.out.println("running...");
+                    i++;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
         for(String user: contents){
           Future<Integer> future= service.submit(new UserProcessor(user, dao));
 //          future.cancel(false);
 //            UserProcessor processor= new UserProcessor(user,dao);
 //            int result= processor.call();
-            System.out.println("Result of operation: "+future.get(1, TimeUnit.SECONDS));
+//            System.out.println("Result of operation: "+future.get(1, TimeUnit.SECONDS));
         }
         service.shutdown();     // shutdown the service
+        if(service.isShutdown())
+            System.out.println("Service is off..");
         System.out.println("Main execution over");
     }
 
